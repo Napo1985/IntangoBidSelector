@@ -9,15 +9,14 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.logging.Logger;
 
-import java.util.logging.ConsoleHandler;
-import java.util.logging.Level;
-
 public class Main {
     private static final Logger LOGGER =  LoggerSingleton.getLogger();
 
     public static void main(String[] args) {
+        simpleRunCase();
+    }
 
-
+    private static void simpleRunCase() {
         LOGGER.info("Starting Bid Selection Process...");
 
         // Create a list of bid objects
@@ -36,18 +35,5 @@ public class Main {
 
         // Print the winner
         LOGGER.info("Winning Publisher: " + winningPublisher);
-    }
-    private static void configureLogger() {
-        LOGGER.setUseParentHandlers(false); // Disable default handlers
-
-        ConsoleHandler handler = new ConsoleHandler() {
-            @Override
-            protected void setOutputStream(java.io.OutputStream out) throws SecurityException {
-                super.setOutputStream(System.out); // Redirect logs to stdout
-            }
-        };
-
-        handler.setLevel(Level.INFO);
-        LOGGER.addHandler(handler);
     }
 }
