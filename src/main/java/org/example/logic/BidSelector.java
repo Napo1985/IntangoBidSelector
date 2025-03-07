@@ -15,31 +15,41 @@ public class BidSelector {
     }
 
     public String selectWinningBid(List<Bid> bids) {
-        if (bids == null || bids.isEmpty()) {
-            LOGGER.warning("No bids available.");
-            return "No Winner";
-        }
-        StringBuilder selectionLog = new StringBuilder(); // Collect logs
+        try {
+            LOGGER.info("▶ START: selectWinningBid");
 
-        Bid winningBid = null;
-        double highestScore = Double.MIN_VALUE;
-
-        for (Bid bid : bids) {
-            double score = bidScoreCalculator.calculateScore(bid);
-            selectionLog.append(String.format("Processing %s | Score: %.2f%n", bid, score));
-
-            if (winningBid == null ||
-                    score > highestScore ||
-                    (score == highestScore && bid.getBidAmount() > winningBid.getBidAmount())) {
-
-                selectionLog.append(String.format("NEW WINNER FOUND: %s%n", bid));
-                winningBid = bid;
-                highestScore = score;
+            if (bids == null || bids.isEmpty()) {
+                LOGGER.warning("No bids available.");
+                return "No Winner";
             }
-        }
 
-        selectionLog.append(String.format("Winning bid: %s%n", winningBid));
-        LOGGER.fine(selectionLog.toString());
-        return winningBid.getPublisherId();
+            LOGGER.info(String.format("Starting bid selection process | Total bids: %d", bids.size()));
+
+            Bid winningBid = null;
+            double highestScore = Double.MIN_VALUE;
+
+            for (Bid bid : bids) {
+                double score = bidScoreCalculator.calculateScore(bid);
+                boolean isNewWinner = (winningBid == null || score > highestScore ||
+                        (score == highestScore && bid.getBidAmount() > winningBid.getBidAmount()));
+
+                LOGGER.info(String.format("Processing %s | Score: %.2f%s",
+                        bid, score, isNewWinner ? " | New winner" : ""));
+
+                if (isNewWinner) {
+                    winningBid = bid;
+                    highestScore = score;
+                }
+            }
+
+            LOGGER.info(String.format("Winning bid: %s", winningBid.getPublisherId()));
+            LOGGER.info("End of bid selection process");
+            return winningBid.getPublisherId();
+        } catch (Exception ex) {
+            LOGGER.severe("Exception message: " + ex.getMessage());
+            throw new RuntimeException("Error with finding winning bid");
+        } finally {
+            LOGGER.info("⏹ END: selectWinningBid");
+        }
     }
 }

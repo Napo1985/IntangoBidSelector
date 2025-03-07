@@ -1,7 +1,6 @@
 package org.example.integration;
 
 import org.example.entities.Bid;
-import org.example.infra.LoggerSingleton;
 import org.example.logic.BidScoreCalculator;
 import org.example.logic.BidSelector;
 import org.junit.jupiter.api.Test;
@@ -9,10 +8,8 @@ import static org.junit.jupiter.api.Assertions.*;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
-import java.util.logging.Logger;
 
 class BidSelectorIntegrationTest {
-    private static final Logger LOGGER = LoggerSingleton.getLogger();
     private final BidScoreCalculator bidScoreCalculator = new BidScoreCalculator();
     private final BidSelector bidSelector = new BidSelector(bidScoreCalculator);
 

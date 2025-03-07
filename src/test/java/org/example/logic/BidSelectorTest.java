@@ -1,29 +1,20 @@
 package org.example.logic;
 
 import org.example.entities.Bid;
-import org.example.infra.LoggerSingleton;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.util.Arrays;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 class BidSelectorTest {
-    private static final Logger LOGGER = LoggerSingleton.getLogger();
-
     private BidScoreCalculator mockScoreCalculator;
     private BidSelector bidSelector;
 
-    @BeforeAll
-    static void disableLogs() {
-        LOGGER.setLevel(Level.OFF);
-    }
+
 
     @BeforeEach
     void setUp() {
